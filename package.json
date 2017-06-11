@@ -1,0 +1,28 @@
+{
+  "name": "valid-path",
+  "version": "1.0.0",
+  "description": "Returns true if provided string looks like a path",
+  "main": "index.js",
+  "scripts": {
+    "test": "test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/solovets/valid-path.git"
+  },
+  "keywords": [
+    "validation",
+    "valid",
+    "path"
+  ],
+  "author": "Denis Solovets",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/solovets/valid-path/issues"
+  },
+  "homepage": "https://github.com/solovets/valid-path#readme",
+  "dependencies": {
+    "is-glob": "^3.1.0",
+    "underscore.string": "^3.3.4"
+  }
+}
