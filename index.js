@@ -6,7 +6,8 @@ module.exports = function (string, options) {
 
 	var opts = {
 		sep: '/',
-		sepDuplications: false
+		sepDuplications: false,
+		disk: true
 	};
 
 	if (typeof options === 'object') {
@@ -19,10 +20,15 @@ module.exports = function (string, options) {
 		if (options.hasOwnProperty('sepDuplications') && typeof options.sepDuplications === 'boolean') {
 			opts.sepDuplications = options.sepDuplications;
 		}
+
+        if (options.hasOwnProperty('disk') && typeof options.disk === 'boolean') {
+            opts.disk = options.disk;
+        }
 	}
 
 	var sep = opts.sep,
         disk = new RegExp('^[A-Z]:\\' + sep),
+		sepDuplications = opts.sep === '/' ? /\/{2,}/ : /\\{2,}/,
 		rows;
 
 	if (typeof string !== 'string') {
@@ -32,13 +38,17 @@ module.exports = function (string, options) {
 	if (_.isBlank(string)) {
 		return 'Provided string is empty';
 	}
-console.log(opts.sep, string, opts.sepDuplications);
-	if (new RegExp(sep + '{2,}').test(string) && opts.sepDuplications === false) {
+
+	if (sepDuplications.test(string) && opts.sepDuplications === false) {
 		return 'Duplicated separator';
 	}
 
 	if (disk.test(string)) {
-		string = string.replace(disk, '');
+		if (opts.disk) {
+            string = string.replace(disk, '');
+		} else {
+			return 'Contains drive letter';
+		}
     }
 
 	if (isGlob(string) && opts.glob === false) {
