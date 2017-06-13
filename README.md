@@ -29,7 +29,7 @@ Then you can use `valid-path`:
 var myPath = validPath('some/string/that/you/need/to/check');
 
 if (myPath) {
-    // do somethink
+    // do something
 } else {
     console.error(myPath);
 }
@@ -57,7 +57,7 @@ if (myPath) {
 |`validPath('C:/', {disk: false});`|'Contains drive letter'|
 |`validPath('C:\\\\a\\b\\c', {sep: '\\', sepDuplications: true, disk: false});`|'Contains drive letter'|
 |`validPath('a/b/con/c');`|'Forbidden file or folder name'|
-|`validPath('a/b/na|me/c');`|'Forbidden characters'
+|`validPath('a/b/na?me/c');`|'Forbidden characters'
 
 
 ## Options
