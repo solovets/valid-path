@@ -1,4 +1,4 @@
-# valid-path
+# valid-path [![NPM version](https://badge.fury.io/js/valid-path.svg)](http://badge.fury.io/js/valid-path)
 Returns true if provided string looks like a path
 
 ## Install
@@ -37,27 +37,28 @@ if (myPath) {
 
 ## Examples
 
-```
-validPath(); // => 'Type of provided argument is not a string';
-validPath({key: 'value'}); // => 'Type of provided argument is not a string';
-validPath(''); // => 'Provided string is empty';
-validPath('      '); // => 'Provided string is empty';
-validPath('a/b//c'); // => 'Duplicated separator';
-validPath('a/b//c', {sepDuplications: true}); // => true
-validPath('a\\b\\c'); // => 'Forbidden characters';
-validPath('a\\b\\c', {sep: '\\'}); // => true
-validPath('a\\b\\\\c', {sep: '\\'}); // => 'Duplicated separator';
-validPath('a\\b\\\\c', {sep: '\\', sepDuplications: true}); // => true
-validPath('C:/a/b/c'); // => true
-validPath('C:'); // => 'Forbidden characters';
-validPath('C:/'); // => true
-validPath('C:\\\\a\\b\\c', {sep: '\\', sepDuplications: true}); // => true
-validPath('C:/a/b/c', {disk: false}); // => 'Contains drive letter'
-validPath('C:/', {disk: false}); // => 'Contains drive letter'
-validPath('C:\\\\a\\b\\c', {sep: '\\', sepDuplications: true, disk: false}); // => 'Contains drive letter'
-validPath('a/b/con/c'); // => 'Forbidden file or folder name'
-validPath('a/b/na|me/c'); // => Forbidden characters
-```
+|Script|Return|
+|------|------|
+|`validPath();`|'Type of provided argument is not a string'|
+|`validPath({key: 'value'});`|'Type of provided argument is not a string'|
+|`validPath('');`|'Provided string is empty'|
+|`validPath('      ');`|'Provided string is empty'|
+|`validPath('a/b//c');`|'Duplicated separator'|
+|`validPath('a/b//c', {sepDuplications: true});`|true|
+|`validPath('a\\b\\c');`|'Forbidden characters'|
+|`validPath('a\\b\\c', {sep: '\\'});`|true|
+|`validPath('a\\b\\\\c', {sep: '\\'});`|'Duplicated separator'|
+|`validPath('a\\b\\\\c', {sep: '\\', sepDuplications: true});`|true|
+|`validPath('C:/a/b/c');`|true|
+|`validPath('C:');`|'Forbidden characters'|
+|`validPath('C:/');`|true|
+|`validPath('C:\\\\a\\b\\c', {sep: '\\', sepDuplications: true});`|true|
+|`validPath('C:/a/b/c', {disk: false});`|'Contains drive letter'|
+|`validPath('C:/', {disk: false});`|'Contains drive letter'|
+|`validPath('C:\\\\a\\b\\c', {sep: '\\', sepDuplications: true, disk: false});`|'Contains drive letter'|
+|`validPath('a/b/con/c');`|'Forbidden file or folder name'|
+|`validPath('a/b/na|me/c');`|'Forbidden characters'
+
 
 ## Options
 
