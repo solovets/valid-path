@@ -1,5 +1,4 @@
-var path = require('path'),
-    isGlob = require('is-glob'),
+var isGlob = require('is-glob'),
 	_ = require('underscore.string');
 
 module.exports = function (string, options) {
