@@ -1,6 +1,6 @@
 const checkString = require('../helpers/check-string');
 
-const stringsToTest = require('./testData').stringsToTest();
+const stringsToTest = require('./testData').checkStringData();
 
 describe(
     'Test for checkString helper function',

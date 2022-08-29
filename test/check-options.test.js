@@ -17,7 +17,7 @@ const expectedOptions = (args) => {
     return object;
 };
 
-const optionsToTest = require('./testData').optionsToTest(expectedOptions);
+const optionsToTest = require('./testData').checkOptionsData(expectedOptions);
 
 describe(
     'Test for checkOptions helper function',
@@ -46,4 +46,4 @@ describe(
             });
         });
     } 
-)
+);

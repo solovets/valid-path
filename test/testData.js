@@ -1,4 +1,4 @@
-module.exports.optionsToTest = (expectedOptions) => {
+module.exports.checkOptionsData = (expectedOptions) => {
     
     return [
         {
@@ -49,7 +49,7 @@ module.exports.optionsToTest = (expectedOptions) => {
 
 };
 
-module.exports.stringsToTest = () => {
+module.exports.checkStringData = () => {
     return [
         {
             argsToPassInTestingFunction: null,
@@ -79,7 +79,7 @@ let result = {
     }
 };
 
-module.exports.validPathArgsToTest = () => {
+module.exports.indexData = () => {
 
     return [
         {
@@ -134,16 +134,16 @@ module.exports.validPathArgsToTest = () => {
         },
         {
             argsToPassInTestingFunction: {
-                string: 'C:\\a\\b\\c',
+                string: 'C:a\\b\\c',
                 options: {
                     sep: '\\'
                 }
             },
             expected: {
                 valid: false,
-                error: 'Input string contains characters, that are forbidden in Windows (C:)',
+                error: 'Input string contains characters, that are forbidden in Windows (C:a)',
                 data: {
-                    input: 'C:\\a\\b\\c',
+                    input: 'C:a\\b\\c',
                     notes: []
                 }
             }
@@ -346,6 +346,237 @@ module.exports.validPathArgsToTest = () => {
                 }
             },
             expected: false
+        },
+    ];
+};
+
+module.exports.migrateOptionsData = () => {
+
+    return [
+        {
+            argsToPassInTestingFunction: {
+                migrate: false,
+                simpleReturn: false,
+                sep: '/',
+                sepDuplications: false,
+                allowSepDuplications: true,
+                disk: true,
+                allowGlobPatterns: false,
+                allowDriveLetter: false,
+                allowForbiddenWindowsNames: true,
+                allowFobiddenWindowsChars: true,
+                allowForbiddenUnixChars: true,
+            },
+            expected: {
+                migrate: false,
+                simpleReturn: false,
+                sep: '/',
+                allowSepDuplications: true,
+                allowGlobPatterns: false,
+                allowDriveLetter: false,
+                allowForbiddenWindowsNames: true,
+                allowFobiddenWindowsChars: true,
+                allowForbiddenUnixChars: true,
+            }
+        },
+        {
+            argsToPassInTestingFunction: {
+                migrate: true,
+                simpleReturn: false,
+                sep: '/',
+                sepDuplications: false,
+                disk: true,
+                allowGlobPatterns: false,
+                allowForbiddenWindowsNames: true,
+                allowFobiddenWindowsChars: true,
+                allowForbiddenUnixChars: true,
+            },
+            expected: {
+                migrate: true,
+                simpleReturn: false,
+                sep: '/',
+                allowSepDuplications: false,
+                allowGlobPatterns: false,
+                allowDriveLetter: true,
+                allowForbiddenWindowsNames: true,
+                allowFobiddenWindowsChars: true,
+                allowForbiddenUnixChars: true,
+            }
+        },
+        {
+            argsToPassInTestingFunction: {
+                migrate: true,
+                simpleReturn: false,
+                sep: '/',
+                sepDuplications: false,
+                allowSepDuplications: true,
+                allowGlobPatterns: false,
+                disk: true,
+                allowDriveLetter: false,
+                allowForbiddenWindowsNames: true,
+                allowFobiddenWindowsChars: true,
+                allowForbiddenUnixChars: true,
+            },
+            expected: {
+                migrate: true,
+                simpleReturn: false,
+                sep: '/',
+                allowSepDuplications: true,
+                allowGlobPatterns: false,
+                allowDriveLetter: false,
+                allowForbiddenWindowsNames: true,
+                allowFobiddenWindowsChars: true,
+                allowForbiddenUnixChars: true,
+            }
+        },
+        {
+            argsToPassInTestingFunction: {
+                migrate: true,
+                simpleReturn: false,
+                sep: '/',
+                sepDuplications: true,
+                allowSepDuplications: false,
+                allowGlobPatterns: false,
+                disk: false,
+                allowDriveLetter: true,
+                allowForbiddenWindowsNames: true,
+                allowFobiddenWindowsChars: true,
+                allowForbiddenUnixChars: true,
+            },
+            expected: {
+                migrate: true,
+                simpleReturn: false,
+                sep: '/',
+                allowSepDuplications: false,
+                allowGlobPatterns: false,
+                allowDriveLetter: true,
+                allowForbiddenWindowsNames: true,
+                allowFobiddenWindowsChars: true,
+                allowForbiddenUnixChars: true,
+            }
+        },
+        {
+            argsToPassInTestingFunction: {
+                migrate: true,
+                simpleReturn: false,
+                sep: '/',
+                sepDuplications: [],
+                allowSepDuplications: false,
+                allowGlobPatterns: false,
+                disk: {},
+                allowDriveLetter: true,
+                allowForbiddenWindowsNames: true,
+                allowFobiddenWindowsChars: true,
+                allowForbiddenUnixChars: true,
+            },
+            expected: {
+                migrate: true,
+                simpleReturn: false,
+                sep: '/',
+                allowSepDuplications: false,
+                allowGlobPatterns: false,
+                allowDriveLetter: true,
+                allowForbiddenWindowsNames: true,
+                allowFobiddenWindowsChars: true,
+                allowForbiddenUnixChars: true,
+            }
+        },
+        {
+            argsToPassInTestingFunction: {
+                migrate: true,
+                simpleReturn: false,
+                sep: '/',
+                sepDuplications: true,
+                allowSepDuplications: [],
+                allowGlobPatterns: false,
+                disk: false,
+                allowDriveLetter: {},
+                allowForbiddenWindowsNames: true,
+                allowFobiddenWindowsChars: true,
+                allowForbiddenUnixChars: true,
+            }, 
+            expected: {
+                migrate: true,
+                simpleReturn: false,
+                sep: '/',
+                allowSepDuplications: false,
+                allowGlobPatterns: false,
+                allowDriveLetter: true,
+                allowForbiddenWindowsNames: true,
+                allowFobiddenWindowsChars: true,
+                allowForbiddenUnixChars: true,
+            }
+        },
+    ]
+};
+
+module.exports.migrateData = () => {
+
+    return [
+        {
+            argsToPassInTestingFunction: {
+                string: 'C://a/b/c',
+                options: {
+                    migrate: true
+                }
+            },
+            expected: true
+        },
+        {
+            argsToPassInTestingFunction: {
+                string: 'C:/a/b/c',
+                options: {
+                    migrate: true
+                }
+            },
+            expected: true
+        },
+        {
+            argsToPassInTestingFunction: {
+                string: 'C://a/b/c',
+                options: {
+                    migrate: true,
+                    disk: false
+                }
+            },
+            expected: 'Contains drive letter'
+        },
+        {
+            argsToPassInTestingFunction: {
+                string: 'C://a//b/c',
+                options: {
+                    migrate: true,
+                    sepDuplications: true
+                }
+            },
+            expected: true
+        },
+        {
+            argsToPassInTestingFunction: {
+                string: 'C://a//b/c',
+                options: {
+                    migrate: true
+                }
+            },
+            expected: 'Duplicated separator'
+        },
+        {
+            argsToPassInTestingFunction: {
+                string: 'C://a/lpt7/c',
+                options: {
+                    migrate: true
+                }
+            },
+            expected: 'Forbidden file or folder name'
+        },
+        {
+            argsToPassInTestingFunction: {
+                string: 'C://a/*/c',
+                options: {
+                    migrate: true
+                }
+            },
+            expected: 'Forbidden characters'
         },
     ];
 };
