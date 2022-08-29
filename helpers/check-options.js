@@ -1,6 +1,10 @@
+const optionsOld = {
+    sepDuplications: 'allowSepDuplications',
+    disk: 'allowDriveLetter'
+};
+
 const optionsDefaults = {
     migrate: false,
-    disk: true,
 
     simpleReturn: false,
     sep: '/',
@@ -14,7 +18,6 @@ const optionsDefaults = {
 
 const optionsInterface = {
     migrate: (input) => typeof input === 'boolean',
-    disk: (input) => typeof input === 'boolean',
 
     simpleReturn: (input) => typeof input === 'boolean',
     sep: (input) => input === '/' || input === '\\',
@@ -31,7 +34,33 @@ module.exports = function(options) {
     let checkedOptions = {};
 
     if (typeof options === 'object' && Array.isArray(options) === false && options !== null) {
-        for (let key in options) {
+        for (let optionKey in options) {
+
+            let key = optionKey;
+
+            if (optionsOld.hasOwnProperty(key) === true && options.hasOwnProperty('migrate') === true && options.migrate === true) {
+                switch (options.hasOwnProperty(optionsOld[key]) === true) {
+                    case true:
+                        console.warn(`[valid-path] You've used both "${key}" and "${optionsOld[key]}" options,\nbut "${optionsOld[key]}" is a new spelling of "${key}".`);
+
+                        if (options[key] !== options[optionsOld[key]]) {
+                            console.warn(`[valid-path] "${key}" and "${optionsOld[key]}" have different values but mean the same. "valid-path" has taken value of "${optionsOld[key]}" since it is the latest variant of spelling.`);
+                        }
+
+                        key = optionsOld[key];
+
+                        break;
+                    case false:
+
+                        options[optionsOld[key]] = options[key];
+                        key = optionsOld[key];
+                        
+                        break;
+                }
+
+                delete options[optionKey];
+            }
+
             if (optionsDefaults.hasOwnProperty(key) === true) {
                 switch (optionsInterface[key](options[key])) {
                     case true:
@@ -43,7 +72,7 @@ module.exports = function(options) {
                         break;
                 }
             } else {
-                console.warn(`[valid-path] Unknown option "${key}"`);
+                console.warn(`[valid-path] Unknown option "${key}"`); 
             }
         }
 
