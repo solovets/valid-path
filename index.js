@@ -1,71 +1,160 @@
-var path = require('path'),
-    isGlob = require('is-glob'),
-	_ = require('underscore.string');
+const path = require('path');
+const isGlob = require('is-glob');
 
-module.exports = function (string, options) {
+const checkString = require('./helpers/check-string');
+const checkOptions = require('./helpers/check-options');
+const migrate = require('./helpers/migrate');
 
-	var opts = {
-		sep: '/',
-		sepDuplications: false,
-		disk: true
+module.exports = function (string, options, callback) {
+
+	let _options;
+
+	let result = {
+		valid: true,
+		error: null,
+		data: {
+			input: '',
+			notes: []
+		}
 	};
 
-	if (typeof options === 'object') {
-		if (options.hasOwnProperty('sep') && typeof options.sep === 'string') {
-			if (options.sep === '/' || options.sep === '\\') {
-				opts.sep = options.sep;
+	if (arguments.length === 2) {
+        if (Object.prototype.toString.call(arguments[1]) === '[object Function]') {
+            callback = arguments[1];
+			_options = checkOptions(null);
+        } else {
+            callback = undefined;
+			_options = checkOptions(options);
+        }
+    } else {
+		_options = checkOptions(options);
+    }
+
+	const returner = (valid, msg) => {
+		switch (valid) {
+			case true:
+				break;
+			case false:
+				result.valid = false;
+				result.error = msg;
+
+				if (callback) callback(result);
+
+				break;
+		}
+	};
+
+	const validString = checkString(string, _options.migrate);
+	result.data.input = string;
+	const originalString = string;
+
+	if ( validString !== true ) {
+		returner(false, validString);
+
+		if (_options.migrate === true) {
+			return validString;
+		} else {
+			return _options.simpleReturn ? result.valid : result;
+		}
+	}
+
+	if (_options.migrate === true) return migrate(string, _options);
+
+	const sep = _options.sep;
+	const driveLetterRegExpSep = sep === '/' ? '\/' : '\\\\';
+	const driveLetter = new RegExp(`^[a-zA-Z]:${driveLetterRegExpSep}?${driveLetterRegExpSep}`);
+	const sepDuplications = _options.sep === '/' ? /\/{2,}/ : /\\{2,}/;
+
+	if (driveLetter.test(string)) {
+
+		let msg = 'Input string contains drive letter';
+
+		switch (_options.allowDriveLetter) {
+			case true:
+				string = string.replace(driveLetter, '');
+				result.data.notes.push(msg);
+				break;
+			case false:
+				returner(false, msg);
+				return _options.simpleReturn ? result.valid : result;
+		}
+	}
+
+	if (sepDuplications.test(string)) {
+		
+		let msg = 'Input string contains duplicated separator';
+
+		switch (_options.allowSepDuplications) {
+			case true:
+				result.data.notes.push(msg);
+				break;
+			case false:
+				returner(false, msg);
+				return _options.simpleReturn ? result.valid : result;
+		}
+	}
+
+	if (isGlob(originalString)) {
+
+		let msg = 'Input string contains Glob pattern';
+
+		switch (_options.allowGlobPatterns) {
+			case true:
+				result.data.notes.push(msg);
+				break;
+			case false:
+				returner(false, msg);
+				return _options.simpleReturn ? result.valid : result;
+		}
+    }
+
+	let rows = string.split(sep);
+
+	for (var i = 0; i < rows.length; i++) {
+		
+		if (/^(nul|prn|con|lpt[0-9]|com[0-9])(\.|$)/i.test(rows[i])) {
+			
+			let msg = `Input string contains file or folder name, that is forbidden in Windows  (${rows[i]})`;
+
+			switch (_options.allowForbiddenWindowsNames) {
+				case true:
+					result.data.notes.push(msg);
+					break;
+				case false:
+					returner(false, msg);
+					return _options.simpleReturn ? result.valid : result;
 			}
 		}
 
-		if (options.hasOwnProperty('sepDuplications') && typeof options.sepDuplications === 'boolean') {
-			opts.sepDuplications = options.sepDuplications;
+		if (_options.allowGlobPatterns === false && /[\\\/:\*\?"<>\|]/.test(rows[i])) {
+			
+			let msg = `Input string contains characters, that are forbidden in Windows (${rows[i]})`;
+
+			switch (_options.allowFobiddenWindowsChars) {
+				case true:
+					result.data.notes.push(msg);
+					break;
+				case false:
+					returner(false, msg);
+					return _options.simpleReturn ? result.valid : result;
+			}
 		}
 
-        if (options.hasOwnProperty('disk') && typeof options.disk === 'boolean') {
-            opts.disk = options.disk;
-        }
-	}
+		if ( /^((?!\0).)*$/.test(rows[i]) === false || (sep === '\\' && /\//.test(rows[i])) ) {
 
-	var sep = opts.sep,
-        disk = new RegExp('^[A-Z]:\\' + sep),
-		sepDuplications = opts.sep === '/' ? /\/{2,}/ : /\\{2,}/,
-		rows;
+			let msg = `Input string contains characters, that are forbidden in Unix (${rows[i]})`;
 
-	if (typeof string !== 'string') {
-		return 'Type of provided argument is not a string';
-    }
-
-	if (_.isBlank(string)) {
-		return 'Provided string is empty';
-	}
-
-	if (sepDuplications.test(string) && opts.sepDuplications === false) {
-		return 'Duplicated separator';
-	}
-
-	if (disk.test(string)) {
-		if (opts.disk) {
-            string = string.replace(disk, '');
-		} else {
-			return 'Contains drive letter';
-		}
-    }
-
-	if (isGlob(string) && opts.glob === false) {
-		return 'Contains Glob pattern';
-    }
-
-	rows = string.split(sep);
-
-	for (var i = 0; i < rows.length; i++) {
-		if (/^(nul|prn|con|lpt[0-9]|com[0-9])(\.|$)/i.test(rows[i])) {
-			return 'Forbidden file or folder name';
+			switch (_options.allowForbiddenUnixChars) {
+				case true:
+					result.data.notes.push(msg);
+					break;
+				case false:
+					returner(false, msg);
+					return _options.simpleReturn ? result.valid : result;
+			}
 		}
 
-		if (/[\\\/:\*\?"<>\|]/.test(rows[i])) {
-			return 'Forbidden characters';
-		}
 	}
 
-    return true;
+    return _options.simpleReturn ? result.valid : result;
 };
