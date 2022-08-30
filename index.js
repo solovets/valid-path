@@ -4,6 +4,7 @@ const isGlob = require('is-glob');
 const checkString = require('./helpers/check-string');
 const checkOptions = require('./helpers/check-options');
 const migrate = require('./helpers/migrate');
+const messages = require('./helpers/messages');
 
 module.exports = function (string, options, callback) {
 
@@ -67,7 +68,7 @@ module.exports = function (string, options, callback) {
 
 	if (driveLetter.test(string)) {
 
-		let msg = 'Input string contains drive letter';
+		let msg = messages.driveLetter(false);
 
 		switch (_options.allowDriveLetter) {
 			case true:
@@ -82,7 +83,7 @@ module.exports = function (string, options, callback) {
 
 	if (sepDuplications.test(string)) {
 		
-		let msg = 'Input string contains duplicated separator';
+		let msg = messages.sepDuplications(false);
 
 		switch (_options.allowSepDuplications) {
 			case true:
@@ -96,7 +97,7 @@ module.exports = function (string, options, callback) {
 
 	if (isGlob(originalString)) {
 
-		let msg = 'Input string contains Glob pattern';
+		let msg = messages.containsGlob();
 
 		switch (_options.allowGlobPatterns) {
 			case true:
@@ -114,7 +115,7 @@ module.exports = function (string, options, callback) {
 		
 		if (/^(nul|prn|con|lpt[0-9]|com[0-9])(\.|$)/i.test(rows[i])) {
 			
-			let msg = `Input string contains file or folder name, that is forbidden in Windows  (${rows[i]})`;
+			let msg = messages.forbiddenNameInWindows(rows[i], false );
 
 			switch (_options.allowForbiddenWindowsNames) {
 				case true:
@@ -128,7 +129,7 @@ module.exports = function (string, options, callback) {
 
 		if (_options.allowGlobPatterns === false && /[\\\/:\*\?"<>\|]/.test(rows[i])) {
 			
-			let msg = `Input string contains characters, that are forbidden in Windows (${rows[i]})`;
+			let msg = messages.forbiddenCharInWindows(rows[i], false);
 
 			switch (_options.allowFobiddenWindowsChars) {
 				case true:
@@ -142,7 +143,7 @@ module.exports = function (string, options, callback) {
 
 		if ( /^((?!\0).)*$/.test(rows[i]) === false || (sep === '\\' && /\//.test(rows[i])) ) {
 
-			let msg = `Input string contains characters, that are forbidden in Unix (${rows[i]})`;
+			let msg = messages.forbiddenCharInUnix(rows[i]);
 
 			switch (_options.allowForbiddenUnixChars) {
 				case true:

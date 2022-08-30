@@ -1,11 +1,13 @@
-module.exports = function(input) {
+const messages = require('./messages');
+
+module.exports = function(input, migrate) {
 
     if (typeof input !== 'string') {
-		return `"string" argument must be of type "string", got "${typeof input}" for "${input}"`;
+		return messages.notString(input, migrate);
     }
 
 	if (/^\s*$/.test(input)) {
-		return `Provided "string" argument is an empty string`;
+		return messages.emptyString(input, migrate);
 	}
 
     return true;

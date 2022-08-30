@@ -1,5 +1,7 @@
 const path = require('path');
 const isGlob = require('is-glob');
+const mssages = require('./messages');
+const messages = require('./messages');
 
 module.exports = function (string, options) {
 
@@ -14,23 +16,23 @@ module.exports = function (string, options) {
 		if (options.allowDriveLetter === true) {
             string = string.replace(driveLetter, '');
 		} else {
-			return 'Contains drive letter';
+			return messages.driveLetter(true);
 		}
     }
 
     if (sepDuplications.test(string) && options.allowSepDuplications === false) {
-		return 'Duplicated separator';
+		return messages.sepDuplications(true);
 	}
 
 	const rows = string.split(sep);
 
 	for (var i = 0; i < rows.length; i++) {
 		if (/^(nul|prn|con|lpt[0-9]|com[0-9])(\.|$)/i.test(rows[i])) {
-			return 'Forbidden file or folder name';
+			return messages.forbiddenNameInWindows('', true);
 		}
 
 		if (/[\\\/:\*\?"<>\|]/.test(rows[i])) {
-			return 'Forbidden characters';
+			return messages.forbiddenCharInWindows('', true);
 		}
 	}
 
