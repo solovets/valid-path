@@ -8,19 +8,31 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/solovets/valid-path.git"
+    "url": "git+https://github.com/itentika/valid-path.git"
   },
   "keywords": [
     "validation",
     "valid",
-    "path"
+    "path",
+    "check",
+    "char",
+    "character",
+    "filepath",
+    "glob",
+    "invalid",
+    "match",
+    "pattern",
+    "regexp",
+    "string",
+    "test",
+    "validate"
   ],
   "author": "Itentika",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/solovets/valid-path/issues"
+    "url": "https://github.com/itentika/valid-path/issues"
   },
-  "homepage": "https://github.com/solovets/valid-path#readme",
+  "homepage": "https://github.com/itentika/valid-path#readme",
   "dependencies": {
     "is-glob": "^4.0.3"
   },
