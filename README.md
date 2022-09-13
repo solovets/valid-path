@@ -1,4 +1,4 @@
-# valid-path [![Created by Itentika](https://img.shields.io/badge/Created%20by-Itentika-blue)](https://itentika.ru) [![NPM version](https://badge.fury.io/js/valid-path.svg)](http://badge.fury.io/js/valid-path) 
+# valid-path [![Created by Itentika](https://img.shields.io/badge/Created%20by-Itentika-blue)](https://itentika.com) [![NPM version](https://badge.fury.io/js/valid-path.svg)](http://badge.fury.io/js/valid-path) 
 
 _Built with love, will be grateful for_ :heart:
 
@@ -9,6 +9,22 @@ Returns an object, that tells if provided string is a valid path, or describes g
 | **input**  | `'a/b/c'` | `'a/nul/b'` |
 | **output** | <pre>{<br/>  valid: true,<br/>  error: null,<br>  data: {<br/>    input: "a/b/c",<br/>    notes: []<br/>  }<br/>}</pre> | <pre>{<br/>  valid: false,<br/>  error: 'Input string contains file or folder name,<br/>          that is forbidden in Windows  (nul)',<br/>  data: {<br/>    input: 'a/nul/b',<br/>    notes: []<br/>  }<br/>}</pre> |
 
+
+## Table of contents
+
+ * [Install](#install)
+ * [Migrate from version 1.0.0](#nb-migrate-from-version-100)
+ * [Usage](#usage)
+ * [Examples](#examples)
+ * [Options](#options)
+   * [simpleReturn](#optionssimplereturn)
+   * [sep](#optionssep)
+   * [allowSepDuplications](#optionsallowsepduplications)
+   * [allowDriveLetter](#optionsallowdriveletter)
+   * [allowGlobPatterns](#optionsallowglobpatterns)
+   * [allowForbiddenWindowsNames](#optionsallowforbiddenwindowsnames)
+   * [allowFobiddenWindowsChars](#optionsallowfobiddenwindowschars)
+   * [allowForbiddenUnixChars](#optionsallowforbiddenunixchars)
  
 ## Install
 
@@ -79,7 +95,16 @@ Outputs for calls with default options
 
 ## Options
 
-Options are optional
+Options are optional:
+
+ * [simpleReturn](#optionssimplereturn)
+ * [sep](#optionssep)
+ * [allowSepDuplications](#optionsallowsepduplications)
+ * [allowDriveLetter](#optionsallowdriveletter)
+ * [allowGlobPatterns](#optionsallowglobpatterns)
+ * [allowForbiddenWindowsNames](#optionsallowforbiddenwindowsnames)
+ * [allowFobiddenWindowsChars](#optionsallowfobiddenwindowschars)
+ * [allowForbiddenUnixChars](#optionsallowforbiddenunixchars)
 
 ### options.simpleReturn
 
