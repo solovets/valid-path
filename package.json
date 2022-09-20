@@ -1,6 +1,6 @@
 {
   "name": "valid-path",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Checks if provided string looks like a valid path",
   "main": "index.js",
   "scripts": {
