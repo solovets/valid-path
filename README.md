@@ -7,14 +7,14 @@ Returns an object, that tells if provided string is a valid path, or describes g
 |            | valid | invalid |
 | :--------- | :----- | :------- |
 | **input**  | `'a/b/c'` | `'a/nul/b'` |
-| **output** | <pre>{<br/>  valid: true,<br/>  error: null,<br>  data: {<br/>    input: "a/b/c",<br/>    notes: []<br/>  }<br/>}</pre> | <pre>{<br/>  valid: false,<br/>  error: 'Input string contains file or folder name,<br/>          that is forbidden in Windows  (nul)',<br/>  data: {<br/>    input: 'a/nul/b',<br/>    notes: []<br/>  }<br/>}</pre> |
-
+| **output** | <pre>{<br/>  valid: true,<br/>  error: null,<br>  data: {<br/>    input: "a/b/c",<br/>    notes: []<br/>    //...flags<br/>  }<br/>}</pre> | <pre>{<br/>  valid: false,<br/>  error: 'Input string contains file<br/>          or folder name, that is<br/>          forbidden in Windows  (nul)',<br/>  data: {<br/>    input: 'a/nul/b',<br/>    notes: []<br/>    //...flags<br/>  }<br/>}</pre> |
 
 ## Table of contents
 
  * [Install](#install)
  * [Migrate from version 1.0.0](#nb-migrate-from-version-100)
  * [Usage](#usage)
+  * [`return` object](#return-object)
  * [Examples](#examples)
  * [Options](#options)
    * [simpleReturn](#optionssimplereturn)
@@ -25,22 +25,13 @@ Returns an object, that tells if provided string is a valid path, or describes g
    * [allowForbiddenWindowsNames](#optionsallowforbiddenwindowsnames)
    * [allowFobiddenWindowsChars](#optionsallowfobiddenwindowschars)
    * [allowForbiddenUnixChars](#optionsallowforbiddenunixchars)
- 
+  * [**Migrate** from version 1.0.0](#nb-migrate-from-version-100)
+
 ## Install
 
 ```
 npm i valid-path
 ```
-
-## [NB] Migrate from version 1.0.0
-
-`valid-pqath` v1.0.0 had `return` and `options` different from current version, and did not have callback argument. If you switch to the latest version, it will break your code. To keep your existing code and use the latest `valid-path` version you have to set `migrate` option to `true`:
-
-```js
-validPath('a/b', {migrate: true});
-```
-
-Plese note, that `migrate` will be deprecated in future versions.
 
 ## Usage
 
@@ -71,6 +62,25 @@ if (myPath.valid) {
     // ...
 } else {
     console.log(`Error in ${myPath.data.input}: ${myPath.error}`);
+}
+```
+
+## `return` object
+
+```javascript
+{
+    valid: boolean,
+    error: null || string,
+    data: {
+        input: input,
+        notes: string[],
+        sepDuplications: boolean,
+        driveLetter: boolean,
+        globPatterns: boolean,
+        forbiddenWindowsNames: boolean,
+        fobiddenWindowsChars: boolean,
+        forbiddenUnixChars: boolean
+    }
 }
 ```
 
@@ -106,6 +116,8 @@ Options are optional:
  * [allowFobiddenWindowsChars](#optionsallowfobiddenwindowschars)
  * [allowForbiddenUnixChars](#optionsallowforbiddenunixchars)
 
+---
+
 ### options.simpleReturn
 
 If `true`, `valid-path` will return boolean (`true` or `false`), not an object.
@@ -120,6 +132,8 @@ If `true`, `valid-path` will return boolean (`true` or `false`), not an object.
 | :---------- | :----   | :------   |
 | **options** | <pre>{<br/>  simpleReturn: true<br/>}</pre> | <pre>{<br/>  simpleReturn: true<br/>}</pre> |
 | **output**  | `true`  | `false`   |
+
+---
 
 ### options.sep
 
@@ -136,6 +150,8 @@ Defines path separator: `/` or `\\`.
 | **options** | <pre>{<br/>  //default<br/>}</pre> | <pre>{<br/>  sep: '\\\\'<br/>}</pre> |
 | **output**  | <pre>{<br/>  valid: true,<br/>  error: null,<br/>  data: {<br/>    input: 'a/b/c',<br/>    notes: []<br>  }<br/>}</pre> | <pre>{<br/>  valid: false,<br/>  error: 'Input string contains characters, that<br/>          are forbidden in Windows (a/b/c)',<br/>  data: {<br/>    input: 'a/b/c',<br/>    notes: []<br/>  }<br/>}</pre> |
 
+---
+
 ### options.allowSepDuplications
 
 If `true`, `valid-path` will ignore separator duplications and will add a note in `notes` array of returned object (`Object.data.notes`).
@@ -150,6 +166,8 @@ If `true`, `valid-path` will ignore separator duplications and will add a note i
 | :---------- | :----   | :------   |
 | **options** | <pre>{<br/>  // default<br/>}</pre> | <pre>{<br/>  allowSepDuplications: true<br/>}</pre> |
 | **output**  | <pre>{<br/>  valid: false,<br/>  error: 'Input string contains<br/>          duplicated separator',<br/>  data: {<br/>    input: 'a/b//c',<br/>    notes: []<br/>  }<br/>}</pre> | <pre>{<br/>  valid: true,<br/>  error: null,<br/>  data: {<br/>    input: 'a/b//c',<br/>    notes: [<br/>      'Input string contains<br/>       duplicated separator'<br/>    ]<br/>  }<br/>}</pre> |
+
+---
 
 ### options.allowDriveLetter
 
@@ -168,6 +186,8 @@ Drive letter can have single and doubled separator (`C:/a/b` or `C://a/b`). In c
 | **options** | <pre>{<br/>  //  default<br/>}</pre> | <pre>{<br/>  allowDriveLetter: false<br/>}</pre> |
 | **output**  | <pre>{<br/>  valid: true,<br/>  error: null,<br/>  data: {<br/>    input: 'C://a/b',<br/>    notes: [<br/>      'Input string contains<br/>       drive letter'<br/>    ]<br/>  }<br/>}</pre> | <pre>{<br/>  valid: false,<br/>  error: 'Input string contains<br/>          drive letter',<br/>  data: {<br/>    input: 'C://a/b',<br/>    notes: []<br/>  }<br/>}</pre> |
 
+---
+
 ### options.allowGlobPatterns
 
 If `true`, `valid-path` will accept glob pattern in provided path and will add a note in `notes` array of returned object (`Object.data.notes`).
@@ -182,6 +202,8 @@ If `true`, `valid-path` will accept glob pattern in provided path and will add a
 | :---------- | :---- | :------   |
 | **options** | <pre>{<br/>  //  default<br/>}</pre> | <pre>{<br/>  allowGlobPatterns: true<br/>}</pre> |
 | **output**  | <pre>{<br/>  valid: false,<br/>  error: 'Input string contains<br/>          Glob pattern',<br/>  data: {<br/>    input: 'a/\*/\*.js',<br/>    notes: []<br/>  }<br/>}</pre> | <pre>{<br/>  valid: true,<br/>  error: null,<br/>  data: {<br/>    input: 'a/\*/\*.js',<br/>    notes: [<br/>      'Input string contains<br/>       Glob pattern'<br/>    ]<br/>  }<br/>}</pre> |
+
+---
 
 ### options.allowForbiddenWindowsNames
 
@@ -200,6 +222,8 @@ By default `valid-path` does not accept file and folder names that are forbidden
 | **options** | <pre>{<br/>  //  default<br/>}</pre> | <pre>{<br/>  allowForbiddenWindowsNames: true<br/>}</pre> |
 | **output**  | <pre>{<br/>  valid: false,<br/>  error: 'Input string contains file or folder name,<br/>          that is forbidden in Windows  (lpt3)',<br/>  data: {<br/>    input: 'a/b/lpt3',<br/>    notes: []<br/>  }<br/>}</pre> | <pre>{<br/>  valid: true,<br/>  error: null,<br/>  data: {<br/>    input: 'a/b/lpt3',<br/>    notes: [<br/>      'Input string contains file or folder name,<br/>       that is forbidden in Windows  (lpt3)'<br/>    ]<br/>  }<br/>}</pre> |
 
+---
+
 ### options.allowFobiddenWindowsChars
 
 By default `valid-path` does not accept characters in path items that are forbidden in Windows: `/`, `\`, `<`, `>`, `:`, `"`, `*`, `?`, `|`. Set to `true` to accept these characters.
@@ -215,6 +239,8 @@ By default `valid-path` does not accept characters in path items that are forbid
 | **options** | <pre>{<br/>  //  default<br/>}</pre> | <pre>{<br/>  allowFobiddenWindowsChars: true<br/>}</pre> |
 | **output**  | <pre>{<br/>  valid: false,<br/>  error: 'Input string contains characters,<br/>          that are forbidden in Windows (b:c)',<br/>  data: {<br/>    input: 'a/b:c/d',<br/>    notes: []<br/>  }<br/>}</pre> | <pre>{<br/>  valid: true,<br/>  error: null,<br/>  data: {<br/>    input: 'a/b:c/d',<br/>    notes: [<br/>      'Input string contains characters,<br/>       that are forbidden in Windows (b:c)'<br/>    ]<br/>  }<br/>}</pre> |
 
+---
+
 ### options.allowForbiddenUnixChars
 
 By default `valid-path` does not accept characters in path items that are forbidden in Unix: `\0` (NULL byte), `/`. Set to `true` to accept these characters.
@@ -229,3 +255,13 @@ By default `valid-path` does not accept characters in path items that are forbid
 | :---------- | :---- | :------   |
 | **options** | <pre>{<br/>  //  default<br/>}</pre> | <pre>{<br/>  allowForbiddenUnixChars: true<br/>}</pre> |
 | **output**  | <pre>{<br/>  valid: false,<br/>  error: 'Input string contains characters,<br/>          that are forbidden in Unix (\x00b)',<br/>  data: {<br/>    input: 'a/\x00b/c',<br/>    notes: []<br/>  }<br/>}</pre> | <pre>{<br/>  valid: true,<br/>  error: null,<br/>  data: {<br/>    input: 'a/\x00b/c',<br/>    notes: [<br/>      'Input string contains characters,<br/>       that are forbidden in Unix  (\x00b)'<br/>    ]<br/>  }<br/>}</pre> |
+
+## [NB] Migrate from version 1.0.0
+
+`valid-pqath` v1.0.0 had `return` and `options` different from current version, and did not have callback argument. If you switch to the latest version, it will break your code. To keep your existing code and use the latest `valid-path` version you have to set `migrate` option to `true`:
+
+```js
+validPath('a/b', {migrate: true});
+```
+
+Plese note, that `migrate` will be deprecated in future versions.
