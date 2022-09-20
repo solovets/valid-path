@@ -30,7 +30,13 @@ describe(
                             error: item.expected === true ? null : item.expected,
                             data: {
                                 input: item.argsToPassInTestingFunction,
-                                notes: []
+                                notes: [],
+                                sepDuplications: false,
+                                driveLetter: false,
+                                globPatterns: false,
+                                forbiddenWindowsNames: false,
+                                fobiddenWindowsChars: false,
+                                forbiddenUnixChars: false
                             }
                         }
                     );

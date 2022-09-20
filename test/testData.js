@@ -94,7 +94,13 @@ module.exports.indexData = () => {
                     input: 'C://a/b/c',
                     notes: [
                         'Input string contains drive letter'
-                    ]
+                    ],
+                    sepDuplications: false,
+                    driveLetter: true,
+                    globPatterns: false,
+                    forbiddenWindowsNames: false,
+                    fobiddenWindowsChars: false,
+                    forbiddenUnixChars: false
                 }
             }
         },
@@ -110,7 +116,13 @@ module.exports.indexData = () => {
                 error: 'Input string contains drive letter',
                 data: {
                     input: 'C://a/b/c',
-                    notes: []
+                    notes: [],
+                    sepDuplications: false,
+                    driveLetter: true,
+                    globPatterns: false,
+                    forbiddenWindowsNames: false,
+                    fobiddenWindowsChars: false,
+                    forbiddenUnixChars: false
                 }
             }
         },
@@ -128,7 +140,13 @@ module.exports.indexData = () => {
                     input: 'C:\\\\a\\b\\c',
                     notes: [
                         'Input string contains drive letter'
-                    ]
+                    ],
+                    sepDuplications: false,
+                    driveLetter: true,
+                    globPatterns: false,
+                    forbiddenWindowsNames: false,
+                    fobiddenWindowsChars: false,
+                    forbiddenUnixChars: false
                 }
             }
         },
@@ -144,7 +162,13 @@ module.exports.indexData = () => {
                 error: 'Input string contains characters, that are forbidden in Windows (C:a)',
                 data: {
                     input: 'C:a\\b\\c',
-                    notes: []
+                    notes: [],
+                    sepDuplications: false,
+                    driveLetter: false,
+                    globPatterns: false,
+                    forbiddenWindowsNames: false,
+                    fobiddenWindowsChars: true,
+                    forbiddenUnixChars: false
                 }
             }
         },
@@ -162,7 +186,13 @@ module.exports.indexData = () => {
                     input: 'C:\\\\a/b/c',
                     notes: [
                         'Input string contains drive letter'
-                    ]
+                    ],
+                    sepDuplications: false,
+                    driveLetter: true,
+                    globPatterns: false,
+                    forbiddenWindowsNames: false,
+                    fobiddenWindowsChars: true,
+                    forbiddenUnixChars: false
                 }
             }
         },
@@ -180,7 +210,13 @@ module.exports.indexData = () => {
                     input: 'C:\\\\a\\nul\\c',
                     notes: [
                         'Input string contains drive letter'
-                    ]
+                    ],
+                    sepDuplications: false,
+                    driveLetter: true,
+                    globPatterns: false,
+                    forbiddenWindowsNames: true,
+                    fobiddenWindowsChars: false,
+                    forbiddenUnixChars: false
                 }
             }
         },
@@ -196,7 +232,13 @@ module.exports.indexData = () => {
                     input: 'C://a/**/*.js',
                     notes: [
                         'Input string contains drive letter'
-                    ]
+                    ],
+                    sepDuplications: false,
+                    driveLetter: true,
+                    globPatterns: true,
+                    forbiddenWindowsNames: false,
+                    fobiddenWindowsChars: false,
+                    forbiddenUnixChars: false
                 }
             }
         },
@@ -215,7 +257,13 @@ module.exports.indexData = () => {
                     notes: [
                         'Input string contains drive letter',
                         'Input string contains Glob pattern'
-                    ]
+                    ],
+                    sepDuplications: false,
+                    driveLetter: true,
+                    globPatterns: true,
+                    forbiddenWindowsNames: false,
+                    fobiddenWindowsChars: false,
+                    forbiddenUnixChars: false
                 }
             }
         },
@@ -233,7 +281,13 @@ module.exports.indexData = () => {
                     input: 'con/**/*.js',
                     notes: [
                         'Input string contains Glob pattern'
-                    ]
+                    ],
+                    sepDuplications: false,
+                    driveLetter: false,
+                    globPatterns: true,
+                    forbiddenWindowsNames: true,
+                    fobiddenWindowsChars: false,
+                    forbiddenUnixChars: false
                 }
             }
         },
@@ -255,7 +309,13 @@ module.exports.indexData = () => {
                         'Input string contains drive letter',
                         'Input string contains duplicated separator',
                         'Input string contains file or folder name, that is forbidden in Windows  (nul)'
-                    ]
+                    ],
+                    sepDuplications: true,
+                    driveLetter: true,
+                    globPatterns: false,
+                    forbiddenWindowsNames: true,
+                    fobiddenWindowsChars: false,
+                    forbiddenUnixChars: false
                 }
             }
         },
@@ -269,7 +329,13 @@ module.exports.indexData = () => {
                 error: null,
                 data: {
                     input: 'a/b/c',
-                    notes: []
+                    notes: [],
+                    sepDuplications: false,
+                    driveLetter: false,
+                    globPatterns: false,
+                    forbiddenWindowsNames: false,
+                    fobiddenWindowsChars: false,
+                    forbiddenUnixChars: false
                 }
             }
         },
@@ -285,7 +351,13 @@ module.exports.indexData = () => {
                 error: 'Input string contains duplicated separator',
                 data: {
                     input: 'a/b//c',
-                    notes: []
+                    notes: [],
+                    sepDuplications: true,
+                    driveLetter: false,
+                    globPatterns: false,
+                    forbiddenWindowsNames: false,
+                    fobiddenWindowsChars: false,
+                    forbiddenUnixChars: false
                 }
             }
         },
@@ -303,7 +375,13 @@ module.exports.indexData = () => {
                     input: 'a/b//c',
                     notes: [
                         'Input string contains duplicated separator'
-                    ]
+                    ],
+                    sepDuplications: true,
+                    driveLetter: false,
+                    globPatterns: false,
+                    forbiddenWindowsNames: false,
+                    fobiddenWindowsChars: false,
+                    forbiddenUnixChars: false
                 }
             }
         },
@@ -322,7 +400,13 @@ module.exports.indexData = () => {
                     input: 'a\\b/c',
                     notes: [
                         'Input string contains characters, that are forbidden in Windows (b/c)'
-                    ]
+                    ],
+                    sepDuplications: false,
+                    driveLetter: false,
+                    globPatterns: false,
+                    forbiddenWindowsNames: false,
+                    fobiddenWindowsChars: true,
+                    forbiddenUnixChars: true
                 }
             }
         },

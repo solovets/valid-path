@@ -1,4 +1,3 @@
-const path = require('path');
 const isGlob = require('is-glob');
 
 const checkString = require('./helpers/check-string');
@@ -15,7 +14,13 @@ module.exports = function (string, options, callback) {
 		error: null,
 		data: {
 			input: '',
-			notes: []
+			notes: [],
+			sepDuplications: false,
+			driveLetter: false,
+			globPatterns: false,
+			forbiddenWindowsNames: false,
+			fobiddenWindowsChars: false,
+			forbiddenUnixChars: false
 		}
 	};
 
@@ -69,6 +74,7 @@ module.exports = function (string, options, callback) {
 	if (driveLetter.test(string)) {
 
 		let msg = messages.driveLetter(false);
+		result.data.driveLetter = true;
 
 		switch (_options.allowDriveLetter) {
 			case true:
@@ -84,6 +90,7 @@ module.exports = function (string, options, callback) {
 	if (sepDuplications.test(string)) {
 		
 		let msg = messages.sepDuplications(false);
+		result.data.sepDuplications = true;
 
 		switch (_options.allowSepDuplications) {
 			case true:
@@ -98,6 +105,7 @@ module.exports = function (string, options, callback) {
 	if (isGlob(originalString)) {
 
 		let msg = messages.containsGlob();
+		result.data.globPatterns = true;
 
 		switch (_options.allowGlobPatterns) {
 			case true:
@@ -116,6 +124,7 @@ module.exports = function (string, options, callback) {
 		if (/^(nul|prn|con|lpt[0-9]|com[0-9])(\.|$)/i.test(rows[i])) {
 			
 			let msg = messages.forbiddenNameInWindows(rows[i], false );
+			result.data.forbiddenWindowsNames = true;
 
 			switch (_options.allowForbiddenWindowsNames) {
 				case true:
@@ -130,6 +139,7 @@ module.exports = function (string, options, callback) {
 		if (_options.allowGlobPatterns === false && /[\\\/:\*\?"<>\|]/.test(rows[i])) {
 			
 			let msg = messages.forbiddenCharInWindows(rows[i], false);
+			result.data.fobiddenWindowsChars = true;
 
 			switch (_options.allowFobiddenWindowsChars) {
 				case true:
@@ -144,6 +154,7 @@ module.exports = function (string, options, callback) {
 		if ( /^((?!\0).)*$/.test(rows[i]) === false || (sep === '\\' && /\//.test(rows[i])) ) {
 
 			let msg = messages.forbiddenCharInUnix(rows[i]);
+			result.data.forbiddenUnixChars = true;
 
 			switch (_options.allowForbiddenUnixChars) {
 				case true:
