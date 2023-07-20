@@ -2,7 +2,6 @@ const isGlob = require('is-glob');
 
 const checkString = require('./helpers/check-string');
 const checkOptions = require('./helpers/check-options');
-const migrate = require('./helpers/migrate');
 const messages = require('./helpers/messages');
 
 module.exports = function (string, options, callback) {
@@ -50,21 +49,15 @@ module.exports = function (string, options, callback) {
 		}
 	};
 
-	const validString = checkString(string, _options.migrate);
+	const validString = checkString(string);
 	result.data.input = string;
 	const originalString = string;
 
 	if ( validString !== true ) {
 		returner(false, validString);
 
-		if (_options.migrate === true) {
-			return validString;
-		} else {
-			return _options.simpleReturn ? result.valid : result;
-		}
+		return _options.simpleReturn ? result.valid : result;
 	}
-
-	if (_options.migrate === true) return migrate(string, _options);
 
 	const sep = _options.sep;
 	const driveLetterRegExpSep = sep === '/' ? '\/' : '\\\\';
