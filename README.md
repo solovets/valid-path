@@ -25,7 +25,6 @@ Returns an object, that tells if provided string is a valid path, or describes g
    * [allowForbiddenWindowsNames](#optionsallowforbiddenwindowsnames)
    * [allowFobiddenWindowsChars](#optionsallowfobiddenwindowschars)
    * [allowForbiddenUnixChars](#optionsallowforbiddenunixchars)
-  * [**Migrate** from version 1.0.0](#nb-migrate-from-version-100)
 
 ## Install
 
@@ -256,12 +255,3 @@ By default `valid-path` does not accept characters in path items that are forbid
 | **options** | <pre>{<br/>  //  default<br/>}</pre> | <pre>{<br/>  allowForbiddenUnixChars: true<br/>}</pre> |
 | **output**  | <pre>{<br/>  valid: false,<br/>  error: 'Input string contains characters,<br/>          that are forbidden in Unix (\x00b)',<br/>  data: {<br/>    input: 'a/\x00b/c',<br/>    notes: []<br/>  }<br/>}</pre> | <pre>{<br/>  valid: true,<br/>  error: null,<br/>  data: {<br/>    input: 'a/\x00b/c',<br/>    notes: [<br/>      'Input string contains characters,<br/>       that are forbidden in Unix  (\x00b)'<br/>    ]<br/>  }<br/>}</pre> |
 
-## [NB] Migrate from version 1.0.0
-
-`valid-pqath` v1.0.0 had `return` and `options` different from current version, and did not have callback argument. If you switch to the latest version, it will break your code. To keep your existing code and use the latest `valid-path` version you have to set `migrate` option to `true`:
-
-```js
-validPath('a/b', {migrate: true});
-```
-
-Plese note, that `migrate` will be deprecated in future versions.
