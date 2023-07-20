@@ -12,7 +12,6 @@ Returns an object, that tells if provided string is a valid path, or describes g
 ## Table of contents
 
  * [Install](#install)
- * [Migrate from version 1.0.0](#nb-migrate-from-version-100)
  * [Usage](#usage)
   * [`return` object](#return-object)
  * [Examples](#examples)
